@@ -567,7 +567,7 @@
         <div class="game-settings">
             <h3>Game Settings</h3>
             <div class="toggle-container">
-                <span class="toggle-label">Play against AI:</span>
+                <span class="toggle-label">Against AI Mode:</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="ai-toggle">
                     <span class="toggle-slider"></span>
@@ -596,7 +596,7 @@
             const body = document.body;
             const pageTransition = document.querySelector('.page-transition');
 
-            // Game variables
+            // game variables
             let currentPlayer = 'X';
             let gameState = ['', '', '', '', '', '', '', '', ''];
             let gameActive = true;
@@ -607,7 +607,7 @@
             };
             let aiMode = false;
             
-            // Winning combinations
+            // winning combinations
             const winningConditions = [
                 [0, 1, 2],
                 [3, 4, 5],
@@ -619,7 +619,7 @@
                 [2, 4, 6]
             ];
 
-            // Apply page transition effect
+            // apply page transition effect
             function applyTransition(callback) {
                 pageTransition.classList.add("active");
                 setTimeout(() => {
@@ -630,7 +630,7 @@
                 }, 500);
             }
 
-            // Apply saved theme or system preference
+            // apply saved theme or system preference
             const savedTheme = localStorage.getItem("ttt-theme");
             const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
@@ -641,7 +641,7 @@
                 themeToggle.textContent = "🌙";
             }
 
-            // Toggle theme listener
+            // toggle theme 'listener'
             themeToggle.addEventListener("click", () => {
                 applyTransition(() => {
                     const isDark = body.classList.toggle("dark-mode");
@@ -650,9 +650,9 @@
                 });
             });
 
-            // Apply transition when navigating away
+            // apply transition when moving away
             document.querySelectorAll("a").forEach(link => {
-                if (!link.target) { // Only apply to links that don't open in new tab
+                if (!link.target) { // only apply to links that don't open in new tab
                     link.addEventListener("click", function(e) {
                         e.preventDefault();
                         const href = this.getAttribute("href");
@@ -664,10 +664,10 @@
                 }
             });
 
-            // Load saved scores
+            // load saved scores
             loadScores();
 
-            // Handle cell click
+            // handle cell click
             function handleCellClick(event) {
                 const cell = event.target;
                 const index = parseInt(cell.getAttribute('data-index'));
@@ -682,19 +682,19 @@
                 }
             }
             
-            // Update cell with player's mark
+            // update cell with player's mark
             function updateCell(cell, index) {
                 gameState[index] = currentPlayer;
                 cell.textContent = currentPlayer;
                 cell.classList.add(currentPlayer.toLowerCase());
             }
             
-            // Check if there's a winner or a draw
+            // check if there's a winner or a draw
             function checkGameResult() {
                 let roundWon = false;
                 let winningCombination = null;
                 
-                // Check winning conditions
+                // check winning conditions
                 for (let i = 0; i < winningConditions.length; i++) {
                     const [a, b, c] = winningConditions[i];
                     if (gameState[a] === '' || gameState[b] === '' || gameState[c] === '') {
@@ -716,7 +716,7 @@
                     return;
                 }
                 
-                // Check for draw
+                // check for draw
                 if (!gameState.includes('')) {
                     updateMessage("It's a draw!", "draw");
                     scores.draw++;
@@ -725,19 +725,19 @@
                     return;
                 }
                 
-                // Continue game with next player
+                // continue game with next player
                 currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
                 updateMessage(`Player ${currentPlayer}'s turn`);
             }
             
-            // Highlight winning cells
+            // highlight winning cells
             function highlightWinningCells(combination) {
                 combination.forEach(index => {
                     cells[index].classList.add('winning');
                 });
             }
             
-            // Update game message
+            // update game message
             function updateMessage(msg, className = '') {
                 message.textContent = msg;
                 message.className = 'message';
@@ -746,7 +746,7 @@
                 }
             }
             
-            // Update score display
+            // update score display
             function updateScoreDisplay() {
                 scoreX.textContent = scores.X;
                 scoreO.textContent = scores.O;
@@ -756,12 +756,12 @@
                 saveScores();
             }
             
-            // Save scores to localStorage
+            // save scores to localStorage
             function saveScores() {
                 localStorage.setItem('ttt-scores', JSON.stringify(scores));
             }
             
-            // Load scores from localStorage
+            // load scores from localStorage
             function loadScores() {
                 const savedScores = localStorage.getItem('ttt-scores');
                 if (savedScores) {
@@ -769,12 +769,12 @@
                     updateScoreDisplay();
                 }
                 
-                // Load AI mode preference
+                // load AI mode preference
                 aiMode = localStorage.getItem('ttt-ai-mode') === 'true';
                 aiToggle.checked = aiMode;
             }
             
-            // Reset game
+            // reset game
             function resetGame() {
                 gameState = ['', '', '', '', '', '', '', '', ''];
                 gameActive = true;
@@ -792,17 +792,17 @@
                 }
             }
             
-            // Reset scores
+            // reset scores
             function resetScores() {
                 scores = { X: 0, O: 0, draw: 0 };
                 updateScoreDisplay();
             }
             
-            // Make AI move
+            // make AI move
             function makeAiMove() {
                 if (!gameActive) return;
                 
-                // Try to win
+                // try to win
                 for (let i = 0; i < cells.length; i++) {
                     if (gameState[i] === '') {
                         gameState[i] = 'O';
@@ -815,7 +815,7 @@
                     }
                 }
                 
-                // Block opponent from winning
+                // block opponent from winning
                 for (let i = 0; i < cells.length; i++) {
                     if (gameState[i] === '') {
                         gameState[i] = 'X';
@@ -829,7 +829,7 @@
                     }
                 }
                 
-                // Take center if available
+                // take center if available
                 if (gameState[4] === '') {
                     gameState[4] = 'O';
                     updateCell(cells[4], 4);
@@ -837,7 +837,7 @@
                     return;
                 }
                 
-                // Take a random available cell
+                // take a random available cell
                 const emptyCells = [];
                 for (let i = 0; i < gameState.length; i++) {
                     if (gameState[i] === '') {
@@ -854,7 +854,7 @@
                 }
             }
             
-            // Check if a player has a winning move
+            // check if a player has a winning move
             function checkWinningMove(player) {
                 for (let i = 0; i < winningConditions.length; i++) {
                     const [a, b, c] = winningConditions[i];
